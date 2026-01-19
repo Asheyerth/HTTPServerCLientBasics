@@ -1,4 +1,4 @@
-function llamadoHTTP() {
+async function llamadoHTTP() {
 
     const http = require('http');
     const options = {
@@ -27,19 +27,28 @@ function llamadoHTTP() {
                 // console.log('statusCode:', res.statusCode);
                 // console.log('headers:', res.headers);
                 // Access response headers    // console.log('content');
-                //console.log(JSON.parse(JSON.stringify(data)));
-                console.log(data);
+                //console.log(JSON.parse(JSON.jzstringify(data)));
+                console.log("data " + data);
+                return data
             });
             console.log('1.2')
         }
     );
+
+
+
+
+
+
     req.on('error', (error) => {
         console.error(error);
     });
     console.log('Pasa 4');
-    req.end();
+    //req.end();
     console.log('Pasa 5');
 
+
+    /*
     function trabajar() {
         console.log('Trabajar');
     }
@@ -47,13 +56,57 @@ function llamadoHTTP() {
     var trabajar2 = () => {
         console.log('Trabajar');
     }
-    
-    
+*/
+
+    async function getData() {
+        console.log("1. Inicio del proceso...");
+
+        try {
+            //const resultado = await req.end();
+            //console.log("2. Resultado recibido:", resultado);
+            console.log("2. Resultado recibido:")
+            req.end();
+        } catch (error) {
+            // Si la promesa falla (reject), el error cae aquí
+            console.error("Hubo un problema:", error);
+        }
+
+        console.log("3. Fin del proceso.");
+    }
+
+    console.log("Llamando función");
+    await getData()
+
 }
 
-var numero_llamada = llamadoHTTP()
- 
-var suma = 1 + numero_llamada
-console.log("suma = ",suma)
+var numero_llamada =  async () =>  await llamadoHTTP()
+
+//var suma = 1 + numero_llamada
+//console.log("suma = ",suma)
+
+console.log("numero " + numero_llamada())
 
 
+setTimeout(function () {
+    console.log("sadasdsad")
+}, (100))
+
+
+/*
+async function getData() {
+    console.log("1. Inicio del proceso...");
+
+    try {
+        const resultado = await req.end();
+        console.log("2. Resultado recibido:", resultado);
+    } catch (error) {
+        // Si la promesa falla (reject), el error cae aquí
+        console.error("Hubo un problema:", error);
+    }
+
+    console.log("3. Fin del proceso.");
+}
+
+console.log("Llamando función");
+getData()
+*/
