@@ -1,0 +1,1 @@
+#include <iostream>#include <boost/asio.hpp>int main() {    boost::asio::io_context io;    std::cout << "Boost.Asio funcionando!" << std::endl;    std::cout << "Hello World" << std::endl;        int var1 = 21;    std::cout << &var1<< std::endl;    return 0;}

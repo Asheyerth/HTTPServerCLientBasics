@@ -1,0 +1,11 @@
+{
+  "name": "client1nodejs",
+  "version": "1.0.0",
+  "description": "First try of a HTTP client with NodeJS native",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
