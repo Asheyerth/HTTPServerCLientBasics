@@ -57,72 +57,14 @@ async function llamadoHTTP() {
 
     return num
 
-    /*
-    console.log("defReq");
-    const req = http.request(options,(res) => {
-            console.log('EntraReq');
-            let data = '';
-            // A chunk of data has been received.  
-            res.on('data', (chunk) => {
-                console.log('Pasa 2');
-                data += chunk;
-            });
-            console.log('1.1')
-            // The whole response has been received.
-            res.on('end', () => {
-                console.log('Pasa 3');
-                console.log("data " + data);
-            });
-            console.log('1.2')
-            return data
-        }
-    )*/
-
-
 }
 
 
 //main
-//console.log("main");
-//var numero_llamada = llamadoHTTP()
-
 llamadoHTTP().then((v) => {
     console.log("then")
-  console.log(v); 
-  var suma = 1 + v
+    console.log(v);
+    var suma = 1 + v
     console.log("suma = ", suma)
     console.log("numero " + v)
 });
-
-
-/*
-var suma = 1 + numero_llamada
-console.log("suma = ", suma)
-
-console.log("numero " + numero_llamada)
-*/
-/*
-setTimeout(function () {
-    console.log("sadasdsad")
-    let suma = 1;
-    numero_llamada.then((data) => {
-        suma = suma + data
-    })
-    console.log("suma = ", suma)
-
-    console.log("numero " + numero_llamada.then)
-}, (5000)) */
-
-
-/*
-setTimeout(function () {
-    console.log("sadasdsad")
-    var asd = numero_llamada.then( value => suma = value+suma )
-    console.log(asd)
-    var suma = 1 + numero_llamada.then( value => suma = value+suma )
-    console.log("suma = ", suma)
-
-    console.log("numero " + numero_llamada)
-}, (5000))
-
-*/
