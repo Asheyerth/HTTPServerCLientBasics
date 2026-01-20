@@ -64,7 +64,8 @@ async function llamadoHTTP() {
 llamadoHTTP().then((v) => {
     console.log("then")
     console.log(v);
-    var suma = 1 + v
+    var a = parseInt(v)
+    var suma = 1 + a
     console.log("suma = ", suma)
     console.log("numero " + v)
 });
