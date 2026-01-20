@@ -79,12 +79,12 @@ async function llamadoHTTP() {
 
 }
 
-var numero_llamada =  async () =>  await llamadoHTTP()
+var numero_llamada =  llamadoHTTP()
 
-//var suma = 1 + numero_llamada
-//console.log("suma = ",suma)
+var suma = 1 + numero_llamada
+console.log("suma = ",suma)
 
-console.log("numero " + numero_llamada())
+console.log("numero " + numero_llamada)
 
 
 setTimeout(function () {
