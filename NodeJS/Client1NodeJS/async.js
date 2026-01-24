@@ -11,6 +11,7 @@ function getData(options) {
             res.on('data', (chunk) => {
                 console.log('Pasa 2');
                 data += chunk;
+                resolve(data) //return
             });
             res.on('connect', () => {
                 console.log("asdasda")
@@ -19,7 +20,6 @@ function getData(options) {
                 try { //actions
                     console.log('Pasa 3');
                     console.log("data " + data);
-                    resolve(data) //return
                 } catch (err) { //error handler
                     console.log('EntraError3');
                     reject(err);
