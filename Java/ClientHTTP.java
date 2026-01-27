@@ -47,7 +47,7 @@ public class ClientHTTP {
 
 
         // Or send the request asynchronously
-        CompletableFuture<String> futureResponse = client.sendAsync(requestNumero, HttpResponse.BodyHandlers.ofString())
+        CompletableFuture<String> futureResponse = client.sendAsync(requestTilde, HttpResponse.BodyHandlers.ofString())
                 .thenApply(HttpResponse::body);
         futureResponse.thenAccept(body -> {
             System.out.println("Async Response Body: " + body);
