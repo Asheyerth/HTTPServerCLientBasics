@@ -4,6 +4,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
+#include <thread>
+#include <chrono> //for the sleep
 
 /*
 Initialize the Socket: socket() - Pick up the phone.
@@ -14,6 +16,53 @@ Accept Connections: accept() - Answer the call.
 Send/Receive Data: read() and write() - Chat with the caller.
 Close Connections: close() - Hang up when done.
 */
+
+void handle_client(int client_fd) {
+    // Read request
+        char buffer[1024] = {0};
+        read(client_fd, buffer, sizeof(buffer) - 1); //Reads data from the client into buffer
+        std::string request(buffer); //Convert to strings
+
+        // Parse path (simplified)
+        std::string path = "/"; // Assume root for simplicity
+        if (request.find("GET / ") != std::string::npos) { //for the root URL
+            path = "/";
+        //for other URLs PERSONAL_NOTE: I think this is fine to fix the number to look for because the other URL are also fixed in code. 
+        } else if (request.find("GET /") != std::string::npos) {
+            size_t start = request.find("GET /") + 4; //Get the index of the initial of the path with /
+            size_t end = request.find(" ", start); //Get the index of the final of the path 
+            path = request.substr(start, end - start); //Get the path with /
+        }
+
+        // Send response
+        std::string response;
+        //URLs Routes
+        if (path =="/") {
+            response ="HTTP/1.1 200 OK\r\n"
+            "Content-Type: text/html;charset=utf-8\r\n"
+            "\r\n<h1>Hola célula!</h1>";
+        }else if (path =="/sintilde") {
+            response ="HTTP/1.1 200 OK\r\n"
+            "Content-Type: text/html;charset=utf-8\r\n"
+            "\r\n<h1>Esta es la primera pagina sin tilde</h1>";
+        }else if (path =="/contilde") {
+            response ="HTTP/1.1 200 OK\r\n"
+            "Content-Type: text/html;charset=utf-8\r\n"
+            "\r\n<h1>Esta es la segunda página</h1>"
+            "\r\n<h2>Esta si contiene tíldes.</h2>";
+        }else {
+            response ="HTTP/1.1 404 Not Found\r\n"
+            "Content-Type: text/html;charset=utf-8\r\n"
+            "\r\n<h1>404 Not Found</h1>";
+        }
+
+        std::this_thread::sleep_for(std::chrono::seconds(5)); //sleep 5 seconds
+
+        write(client_fd, response.c_str(), response.length());
+
+        // Close client socket
+        close(client_fd);
+}
 
 
 
@@ -59,61 +108,13 @@ int main() {
             continue;
         }
 
-        // Read request
-        char buffer[1024] = {0};
-        read(client_fd, buffer, sizeof(buffer) - 1); //Reads data from the client into buffer
-        std::string request(buffer); //Convert to strings
+        //With only calling it one time
+        //handle_client(client_fd);
 
-        // Parse path (simplified)
-        std::string path = "/"; // Assume root for simplicity
-        if (request.find("GET / ") != std::string::npos) { //for the root URL
-            path = "/";
-        //for other URLs PERSONAL_NOTE: I think this is fine to fix the number to look for because the other URL are also fixed in code. 
-        } else if (request.find("GET /") != std::string::npos) {
-            size_t start = request.find("GET /") + 4; //Get the index of the initial of the path with /
-            size_t end = request.find(" ", start); //Get the index of the final of the path 
-            path = request.substr(start, end - start); //Get the path with /
-            /*
-            std::cerr << "\n ASDASDSADASDASDASD\n";
-            std::cerr << path;
-            std::cerr << "\n start";
-            std::cerr << start;
-            std::cerr << "\n end";
-            std::cerr << end;
-            std::cerr << "\n request";
-            std::cerr << request;
-            std::cerr << "\n";
-            */
-        }
-
-        // Send response
-        std::string response;
-        //URLs Routes
-        if (path =="/") {
-            response ="HTTP/1.1 200 OK\r\n"
-            "Content-Type: text/html;charset=utf-8\r\n"
-            "\r\n<h1>Hola célula!</h1>";
-        }else if (path =="/sintilde") {
-            response ="HTTP/1.1 200 OK\r\n"
-            "Content-Type: text/html;charset=utf-8\r\n"
-            "\r\n<h1>Esta es la primera pagina sin tilde</h1>";
-        }else if (path =="/contilde") {
-            response ="HTTP/1.1 200 OK\r\n"
-            "Content-Type: text/html;charset=utf-8\r\n"
-            "\r\n<h1>Esta es la segunda página</h1>"
-            "\r\n<h2>Esta si contiene tíldes.</h2>";
-        }else {
-            response ="HTTP/1.1 404 Not Found\r\n"
-            "Content-Type: text/html;charset=utf-8\r\n"
-            "\r\n<h1>404 Not Found</h1>";
-        }
-
-
-
-        write(client_fd, response.c_str(), response.length());
-
-        // Close client socket
-        close(client_fd);
+        //Threads
+        // Handle client in a new thread.
+        std::thread client_thread(handle_client, client_fd);
+        client_thread.detach(); // Detach to avoid blocking
     }
 
     // Close server socket (unreachable in this loop because of the while. A break might do)
