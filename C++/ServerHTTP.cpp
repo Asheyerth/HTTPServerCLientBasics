@@ -108,6 +108,7 @@ int main() {
             continue;
         }
 
+        //Async
         //With only calling it one time
         //handle_client(client_fd);
 
